@@ -5734,6 +5734,13 @@ export const translations = {
     funnel_step_calculator: 'Калькулятор',
     funnel_step_lead: 'Заявка',
     funnel_step_deal: 'Угода',
+
+    // Intent Dashboard stats
+    warmUsers: 'WARM',
+    coldUsers: 'COLD',
+    autoLeads: 'Авто-ліди',
+    totalUsersWithIntent: 'Усього з намірами',
+    averageScore: 'Середній скор',
   },
   
   en: {
@@ -11444,6 +11451,13 @@ export const translations = {
     funnel_step_calculator: 'Calculator',
     funnel_step_lead: 'Lead',
     funnel_step_deal: 'Deal',
+
+    // Intent Dashboard stats
+    warmUsers: 'WARM',
+    coldUsers: 'COLD',
+    autoLeads: 'Auto-leads',
+    totalUsersWithIntent: 'Users with intent',
+    averageScore: 'Average score',
   },
 
   bg: {
@@ -17167,6 +17181,13 @@ export const translations = {
     funnel_step_calculator: 'Калкулатор',
     funnel_step_lead: 'Заявка',
     funnel_step_deal: 'Сделка',
+
+    // Intent Dashboard stats
+    warmUsers: 'WARM',
+    coldUsers: 'COLD',
+    autoLeads: 'Авто-лийдове',
+    totalUsersWithIntent: 'Потребители с намерения',
+    averageScore: 'Средна оценка',
   },
 };
 

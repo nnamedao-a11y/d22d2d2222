@@ -230,7 +230,7 @@ const UserEngagementPage = () => {
             value={vinSearch}
             onChange={(e) => setVinSearch(e.target.value.toUpperCase())}
             placeholder={t('adm_enter_vin')}
-            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+            className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#18181B]/20 focus:border-transparent text-sm"
             data-testid="vin-search-input"
           />
           <div className="flex gap-2">
@@ -242,7 +242,7 @@ const UserEngagementPage = () => {
             </button>
             <button
               onClick={() => vinSearch && openCampaignModal(vinSearch)}
-              className="flex-1 sm:flex-none px-4 py-2.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center gap-2 text-sm whitespace-nowrap"
+              className="flex-1 sm:flex-none px-4 py-2.5 bg-[#18181B] text-white rounded-lg hover:bg-[#27272A] transition-colors flex items-center justify-center gap-2 text-sm whitespace-nowrap"
               data-testid="send-campaign-btn"
             >
               <PaperPlaneTilt className="w-4 h-4 flex-shrink-0" />
@@ -268,7 +268,7 @@ const UserEngagementPage = () => {
                 <div className="text-xs text-gray-500">{t('adm_hot')}</div>
               </div>
               <div>
-                <div className="text-2xl font-bold text-purple-600">{vinStats.totalInterested}</div>
+                <div className="text-2xl font-bold text-[#18181B]">{vinStats.totalInterested}</div>
                 <div className="text-xs text-gray-500">{t('adm_total_5')}</div>
               </div>
             </div>
@@ -350,30 +350,40 @@ const UserEngagementPage = () => {
 };
 
 // Stat Card Component
-const StatCard = ({ icon: Icon, label, value, color }) => {
-  const { t } = useLang();
-  const colors = {
-    purple: 'bg-purple-50 text-purple-600',
-    blue: 'bg-blue-50 text-blue-600',
-    red: 'bg-red-50 text-red-600',
-    orange: 'bg-orange-50 text-orange-600',
-    green: 'bg-green-50 text-green-600',
+const UserEngagementPage_StatCardLEGACY = null; // placeholder for diff anchor
+const StatCard = ({ icon: Icon, label, value, tint, color }) => {
+  // Back-compat: callers may still pass `color="purple"` — fall through to tint.
+  const resolvedTint = tint || color || 'muted';
+  const TINT = {
+    rose:  'text-rose-500',
+    amber: 'text-amber-500',
+    blue:  'text-blue-500',
+    purple:'text-[#A1A1AA]', // map old purple → muted gray
+    red:   'text-rose-500',
+    yellow:'text-amber-500',
+    orange:'text-amber-500',
+    green: 'text-[#A1A1AA]',
+    muted: 'text-[#A1A1AA]',
   };
-
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-3 md:p-4" data-testid="stat-card">
-      <div className="flex items-center justify-between gap-2">
-        <div className="min-w-0 flex-1">
-          <p className="text-xs md:text-sm text-gray-500 truncate">{label}</p>
-          <p className="text-xl md:text-2xl font-bold mt-0.5">{value}</p>
-        </div>
-        <div className={`p-2 md:p-3 rounded-lg flex-shrink-0 ${colors[color]}`}>
-          <Icon className="w-4 h-4 md:w-5 md:h-5" weight="fill" />
-        </div>
+    <div className="bg-white border border-[#E4E4E7] rounded-2xl p-3 sm:p-4 min-w-0 overflow-hidden hover:border-[#D4D4D8] transition-colors">
+      <div className="flex items-center justify-between gap-2 mb-1.5">
+        <span className="text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.10em] text-[#71717A] truncate">
+          {label}
+        </span>
+        {Icon && <Icon size={14} weight="bold" className={`${TINT[resolvedTint] || TINT.muted} flex-shrink-0`} />}
+      </div>
+      <div className="text-[22px] sm:text-[26px] font-semibold tabular-nums leading-tight text-[#18181B] truncate" title={String(value)}>
+        {value}
       </div>
     </div>
   );
 };
+
+// Original `color` prop is preserved (red/blue/purple/orange/green) — it gets
+// mapped to a monochrome muted tone above, so no caller needs to change.
+// Kept around just to absorb old usages; not exported.
+const _StatCardLegacyShim = StatCard;
 
 // Top Vehicles Table
 const TopVehiclesTable = ({ vehicles, onCampaign }) => {
@@ -427,13 +437,13 @@ const TopVehiclesTable = ({ vehicles, onCampaign }) => {
                     {vehicle.hotUsersCount}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-center font-bold text-purple-600">
+                <td className="px-4 py-3 text-center font-bold text-[#18181B]">
                   {vehicle.totalInterested}
                 </td>
                 <td className="px-4 py-3 text-right">
                   <button
                     onClick={() => onCampaign(vehicle.vin)}
-                    className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-lg hover:bg-purple-200 transition-colors text-sm font-medium flex items-center gap-1 ml-auto"
+                    className="px-3 py-1.5 bg-[#F4F4F5] text-[#3F3F46] rounded-lg hover:bg-[#E4E4E7] transition-colors text-sm font-medium flex items-center gap-1 ml-auto"
                     data-testid={`campaign-btn-${vehicle.vin}`}
                   >
                     <PaperPlaneTilt className="w-4 h-4" />
@@ -646,7 +656,7 @@ const CampaignModal = ({
           className="relative bg-white rounded-2xl shadow-xl max-w-lg w-full p-6"
         >
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <PaperPlaneTilt className="w-6 h-6 text-purple-600" />
+            <PaperPlaneTilt className="w-6 h-6 text-[#18181B]" />
             {t('adm_campaign_for_vin')}
           </h2>
           
@@ -669,7 +679,7 @@ const CampaignModal = ({
                   onClick={() => setChannel(ch)}
                   className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                     channel === ch
-                      ? 'bg-purple-600 text-white'
+                      ? 'bg-[#18181B] text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
@@ -703,7 +713,7 @@ const CampaignModal = ({
               onChange={(e) => setMessage(e.target.value)}
               rows={4}
               placeholder={t('adm3_17d4364748')}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#18181B]/20 focus:border-transparent"
               data-testid="campaign-message-input"
             />
             <div className="text-xs text-gray-500 mt-1">
@@ -729,7 +739,7 @@ const CampaignModal = ({
               <button
                 onClick={() => setOnlyHot(!onlyHot)}
                 className={`w-12 h-6 rounded-full transition-colors ${
-                  onlyHot ? 'bg-purple-600' : 'bg-gray-300'
+                  onlyHot ? 'bg-[#18181B]' : 'bg-gray-300'
                 }`}
               >
                 <span className={`block w-5 h-5 bg-white rounded-full shadow transition-transform ${
@@ -750,7 +760,7 @@ const CampaignModal = ({
             <button
               onClick={onSend}
               disabled={sending || !message.trim()}
-              className="flex-1 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="flex-1 px-4 py-2 bg-[#18181B] text-white rounded-lg hover:bg-[#27272A] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
               data-testid="send-campaign-confirm-btn"
             >
               {sending ? (
