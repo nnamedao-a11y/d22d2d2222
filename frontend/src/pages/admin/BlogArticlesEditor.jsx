@@ -156,7 +156,6 @@ export default function BlogArticlesEditor() {
             <WhiteSelect
               value={filter.category}
               onChange={(e) => setFilter((f) => ({ ...f, category: e.target.value }))}
-              className={inputCls}
               data-testid="blog-filter-category"
             >
               <option value="all">{t('allCategories')}</option>
@@ -405,7 +404,6 @@ function ArticleEditorModal({ initial, allItems, onClose, onSaved }) {
               <WhiteSelect
                 value={form.category}
                 onChange={(e) => set('category', e.target.value)}
-                className={inputCls}
                 data-testid="blog-form-category"
               >
                 {CATEGORIES.map((c) => (

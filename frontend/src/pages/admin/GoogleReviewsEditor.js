@@ -358,7 +358,6 @@ export default function GoogleReviewsEditor() {
 
           <Field label="Min rating to display" hint="Reviews with rating below this value are hidden on the public site.">
             <WhiteSelect
-              className={inputCls()}
               value={config?.min_rating_filter || 4}
               onChange={(e) => updateCfg('min_rating_filter', parseInt(e.target.value, 10))}
               data-testid="grev-min-rating"
@@ -418,7 +417,6 @@ export default function GoogleReviewsEditor() {
 
           <Field label="Block enabled">
             <WhiteSelect
-              className={inputCls()}
               value={config?.enabled ? 'true' : 'false'}
               onChange={(e) => updateCfg('enabled', e.target.value === 'true')}
               data-testid="grev-enabled"
@@ -498,7 +496,6 @@ export default function GoogleReviewsEditor() {
           </Field>
           <Field label="Rating">
             <WhiteSelect
-              className={inputCls()}
               value={manualForm.rating}
               onChange={(e) => setManualForm((f) => ({ ...f, rating: parseInt(e.target.value, 10) }))}
               data-testid="grev-manual-rating"
