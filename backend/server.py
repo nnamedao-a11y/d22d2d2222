@@ -7290,6 +7290,12 @@ async def customer_cabinet_delete_avatar(customer_id: str):
 # Analytics Dashboard
 @fastapi_app.get("/api/analytics/dashboard")
 async def analytics_dashboard(days: int = 30):
+    """Analytics dashboard mock — fields aligned with AdminAnalyticsDashboard.jsx.
+
+    `funnel.steps[*].name_key` is a stable i18n key the frontend translates.
+    `name` is kept as an English fallback so any future locale that lacks the
+    key still renders something readable.
+    """
     return {
         "success": True,
         "data": {
@@ -7299,6 +7305,7 @@ async def analytics_dashboard(days: int = 30):
                 "vinSearches": 800,
                 "leads": 450,
                 "deals": 150,
+                "conversion": 3.5,
                 "conversionRate": 3.5,
             },
             "summary": {
@@ -7315,34 +7322,35 @@ async def analytics_dashboard(days: int = 30):
                 "sessions": 5,
             },
             "timeline": [
-                {"date": "2026-04-01", "pageViews": 450, "visitors": 150, "conversions": 5},
-                {"date": "2026-04-02", "pageViews": 520, "visitors": 180, "conversions": 8},
-                {"date": "2026-04-03", "pageViews": 480, "visitors": 160, "conversions": 6},
-                {"date": "2026-04-04", "pageViews": 550, "visitors": 200, "conversions": 9},
-                {"date": "2026-04-05", "pageViews": 600, "visitors": 220, "conversions": 11},
-                {"date": "2026-04-06", "pageViews": 530, "visitors": 190, "conversions": 7},
-                {"date": "2026-04-07", "pageViews": 580, "visitors": 210, "conversions": 10},
+                {"_id": "2026-04-01", "total": 450, "pageViews": 450, "visitors": 150, "conversions": 5},
+                {"_id": "2026-04-02", "total": 520, "pageViews": 520, "visitors": 180, "conversions": 8},
+                {"_id": "2026-04-03", "total": 480, "pageViews": 480, "visitors": 160, "conversions": 6},
+                {"_id": "2026-04-04", "total": 550, "pageViews": 550, "visitors": 200, "conversions": 9},
+                {"_id": "2026-04-05", "total": 600, "pageViews": 600, "visitors": 220, "conversions": 11},
+                {"_id": "2026-04-06", "total": 530, "pageViews": 530, "visitors": 190, "conversions": 7},
+                {"_id": "2026-04-07", "total": 580, "pageViews": 580, "visitors": 210, "conversions": 10},
             ],
             "funnel": {
                 "steps": [
-                    {"name": "Відвідування", "value": 5200},
-                    {"name": "Перегляд авто", "value": 2800},
-                    {"name": "Калькулятор", "value": 1500},
-                    {"name": "Заявка", "value": 450},
-                    {"name": "Угода", "value": 150},
+                    {"name_key": "funnel_step_visits",        "name": "Visits",          "value": 5200, "rate": 100.0},
+                    {"name_key": "funnel_step_vehicle_views", "name": "Vehicle Views",   "value": 2800, "rate": 53.8},
+                    {"name_key": "funnel_step_calculator",    "name": "Calculator",      "value": 1500, "rate": 28.8},
+                    {"name_key": "funnel_step_lead",          "name": "Lead",            "value": 450,  "rate":  8.7},
+                    {"name_key": "funnel_step_deal",          "name": "Deal",            "value": 150,  "rate":  2.9},
                 ]
             },
             "sources": [
-                {"name": "Google", "visitors": 2500, "conversions": 75},
-                {"name": "Direct", "visitors": 1800, "conversions": 50},
-                {"name": "Facebook", "visitors": 600, "conversions": 15},
-                {"name": "Instagram", "visitors": 300, "conversions": 10},
+                {"source": "Google",    "visits": 6500, "leads": 220, "deals": 75, "profit": 18500, "conversion": 3.4},
+                {"source": "Direct",    "visits": 4200, "leads": 140, "deals": 50, "profit": 12200, "conversion": 3.3},
+                {"source": "Facebook",  "visits": 2100, "leads":  60, "deals": 15, "profit":  3600, "conversion": 2.9},
+                {"source": "Instagram", "visits": 1300, "leads":  30, "deals": 10, "profit":  2400, "conversion": 2.3},
             ],
+            "fakeTraffic": None,
             "topPages": [
-                {"path": "/", "views": 3500, "avgTime": 45},
-                {"path": "/vehicles", "views": 2800, "avgTime": 120},
+                {"path": "/",           "views": 3500, "avgTime":  45},
+                {"path": "/vehicles",   "views": 2800, "avgTime": 120},
                 {"path": "/calculator", "views": 1500, "avgTime": 180},
-                {"path": "/vin-check", "views": 800, "avgTime": 90},
+                {"path": "/vin-check",  "views":  800, "avgTime":  90},
             ]
         }
     }
@@ -7350,17 +7358,38 @@ async def analytics_dashboard(days: int = 30):
 # Marketing Campaigns
 @fastapi_app.get("/api/marketing/campaigns")
 async def marketing_campaigns(days: int = 30):
+    """Marketing campaigns mock — fields aligned with CampaignOptimizer in
+    AdminAnalyticsDashboard.jsx. `campaign` label uses an English ad-network
+    convention so it reads correctly in every UI locale."""
+    decisions = [
+        {"campaign": "Spring Promo",   "source": "google_ads",  "spend": 5000, "leads": 120, "deals": 25, "roi": 180.0, "status": "scale", "actions": ["Increase budget by 30%"]},
+        {"campaign": "BMW Series",     "source": "facebook_ads","spend": 3000, "leads":  80, "deals": 15, "roi": 150.0, "status": "keep",  "actions": ["Maintain budget"]},
+        {"campaign": "Test Drive",     "source": "instagram",   "spend": 2000, "leads":  40, "deals":  5, "roi":  80.0, "status": "watch", "actions": ["Refresh creatives"]},
+        {"campaign": "Re-engagement",  "source": "email",       "spend":  500, "leads":  15, "deals":  1, "roi":  20.0, "status": "kill",  "actions": ["Pause campaign"]},
+    ]
+    summary = {
+        "scaleCount":  sum(1 for d in decisions if d["status"] == "scale"),
+        "keepCount":   sum(1 for d in decisions if d["status"] == "keep"),
+        "watchCount":  sum(1 for d in decisions if d["status"] == "watch"),
+        "killCount":   sum(1 for d in decisions if d["status"] == "kill"),
+        "recommendations": [
+            "Shift 30% of 'Test Drive' budget into 'Spring Promo' (highest ROI).",
+            "Pause 'Re-engagement' — ROI under 25% for the last 14 days.",
+        ],
+    }
     return {
         "success": True,
         "data": {
+            "decisions": decisions,
+            "summary": summary,
             "campaigns": [
-                {"id": "1", "name": "Весняна акція", "status": "scale", "spend": 5000, "leads": 120, "conversions": 25, "roi": 180},
-                {"id": "2", "name": "BMW Series", "status": "keep", "spend": 3000, "leads": 80, "conversions": 15, "roi": 150},
-                {"id": "3", "name": "Тест-драйв", "status": "watch", "spend": 2000, "leads": 40, "conversions": 5, "roi": 80},
+                {"id": d["campaign"], "name": d["campaign"], "status": d["status"],
+                 "spend": d["spend"], "leads": d["leads"], "conversions": d["deals"], "roi": d["roi"]}
+                for d in decisions
             ],
-            "totalSpend": 10000,
-            "totalLeads": 240,
-            "totalConversions": 45,
+            "totalSpend":       sum(d["spend"]  for d in decisions),
+            "totalLeads":       sum(d["leads"]  for d in decisions),
+            "totalConversions": sum(d["deals"]  for d in decisions),
             "avgCPA": 42,
             "avgROI": 136,
         }

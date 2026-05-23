@@ -407,6 +407,21 @@ h1, h2, h3, h4, h5, h6, button, input, select, textarea {
 .kpi-card:hover { border-color: #D4D4D8; box-shadow: 0 4px 12px rgba(0,0,0,0.04); }
 .kpi-value { font-family: 'Mazzard', 'Mazzard H', 'Mazzard M', system-ui, sans-serif; font-size: 2.25rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: #18181B; }
 .kpi-label { font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: #71717A; margin-top: 8px; }
+
+/* Compact KPI variant — used inside dense dashboards (analytics, etc.).
+   Responsive font-size via clamp so big numbers like "15 000" never overflow
+   on mobile, while still looking strong on desktop. */
+.kpi-card--compact { padding: 14px 14px; }
+@media (min-width: 640px) { .kpi-card--compact { padding: 16px 18px; } }
+@media (min-width: 1024px) { .kpi-card--compact { padding: 18px 22px; } }
+.kpi-value--fit {
+  font-size: clamp(1.25rem, 5.5vw, 2rem);
+  line-height: 1.05;
+  max-width: 100%;
+}
+@media (min-width: 1024px) {
+  .kpi-value--fit { font-size: clamp(1.5rem, 1.8vw, 2.25rem); }
+}
 .sidebar { width: 260px; background: white; border-right: 1px solid #E4E4E7; min-height: 100vh; display: flex; flex-direction: column; }
 .sidebar-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; font-size: 14px; font-weight: 500; color: #71717A; cursor: pointer; border-radius: 12px; margin: 2px 8px; transition: background-color 0.15s ease, color 0.15s ease; min-width: 0; }
 .sidebar-item > span:not(:first-child) { min-width: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

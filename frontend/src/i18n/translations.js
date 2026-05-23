@@ -5727,6 +5727,13 @@ export const translations = {
     cab_step_obtaining: 'Отримання',
     cab_theme: 'Тема',
     cab_language: 'Мова',
+
+    // Analytics funnel steps
+    funnel_step_visits: 'Відвідування',
+    funnel_step_vehicle_views: 'Перегляд авто',
+    funnel_step_calculator: 'Калькулятор',
+    funnel_step_lead: 'Заявка',
+    funnel_step_deal: 'Угода',
   },
   
   en: {
@@ -11430,6 +11437,13 @@ export const translations = {
     cab_step_obtaining: 'Obtaining',
     cab_theme: 'Theme',
     cab_language: 'Language',
+
+    // Analytics funnel steps
+    funnel_step_visits: 'Visits',
+    funnel_step_vehicle_views: 'Vehicle Views',
+    funnel_step_calculator: 'Calculator',
+    funnel_step_lead: 'Lead',
+    funnel_step_deal: 'Deal',
   },
 
   bg: {
@@ -17146,6 +17160,13 @@ export const translations = {
     cab_step_obtaining: 'Получаване',
     cab_theme: 'Тема',
     cab_language: 'Език',
+
+    // Analytics funnel steps
+    funnel_step_visits: 'Посещения',
+    funnel_step_vehicle_views: 'Преглед на автомобил',
+    funnel_step_calculator: 'Калкулатор',
+    funnel_step_lead: 'Заявка',
+    funnel_step_deal: 'Сделка',
   },
 };
 

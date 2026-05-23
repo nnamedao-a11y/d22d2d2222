@@ -294,7 +294,8 @@ const WhiteSelect = React.forwardRef(function WhiteSelect({
         `}
       >
         <span
-          className={`flex-1 min-w-0 whitespace-normal break-words [overflow-wrap:anywhere] leading-snug ${selected ? 'text-[#18181B]' : 'text-[#A1A1AA]'}`}
+          className={`flex-1 min-w-0 truncate leading-snug ${selected ? 'text-[#18181B]' : 'text-[#A1A1AA]'}`}
+          title={typeof triggerLabel === 'string' ? triggerLabel : undefined}
         >
           {triggerLabel}
         </span>
