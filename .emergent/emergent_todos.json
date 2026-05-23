@@ -1,0 +1,30 @@
+[
+  {
+    "content": "Examine cloned repo structure",
+    "status": "completed"
+  },
+  {
+    "content": "Backup existing .env files and copy repo into /app",
+    "status": "completed"
+  },
+  {
+    "content": "Install backend Python dependencies",
+    "status": "completed"
+  },
+  {
+    "content": "Install frontend node dependencies (yarn)",
+    "status": "completed"
+  },
+  {
+    "content": "Configure .env files with secrets (JWT_SECRET, EXT_SHARED_SECRET, EMERGENT_LLM_KEY)",
+    "status": "completed"
+  },
+  {
+    "content": "Restart services and verify backend & frontend up",
+    "status": "completed"
+  },
+  {
+    "content": "Verify app loads at preview URL and core endpoints respond",
+    "status": "completed"
+  }
+]
