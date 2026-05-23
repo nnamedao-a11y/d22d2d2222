@@ -61,26 +61,36 @@ const ControlSubNav = () => {
 
   return (
     <div
-      className="-mx-4 md:-mx-6 lg:-mx-[50px] -mt-5 md:-mt-6 lg:-mt-8 mb-7 sm:mb-8 bg-white border-b border-[#E4E4E7]"
+      className="-mx-4 md:-mx-6 lg:-mx-[50px] -mt-5 md:-mt-6 lg:-mt-8 mb-5 sm:mb-6 bg-white border-b border-[#E4E4E7]"
       data-testid="control-subnav"
     >
-      <div className="px-4 md:px-6 lg:px-[50px] py-3.5 sm:py-4 overflow-x-auto scrollbar-none">
-        <div className="flex items-center gap-2 min-w-max">
+      <div className="px-4 md:px-6 lg:px-[50px] py-3 sm:py-3.5 overflow-x-auto scrollbar-none">
+        {/* Canonical SectionTabs visual: #FAFAFA track + white active pill
+            with 1.5px black ring. Same language used everywhere else
+            (Documents, Marketing, Owner Dashboard sub-sections). */}
+        <div
+          role="tablist"
+          aria-label="Control sections"
+          className="inline-flex p-1 bg-[#FAFAFA] border border-[#E4E4E7] rounded-xl gap-1 max-w-full"
+        >
           {tabs.map(({ to, icon: Icon, label }) => {
             const active = pathname === to;
             return (
               <NavLink
                 key={to}
                 to={to}
-                className={`inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2 rounded-full text-[13px] sm:text-sm font-medium whitespace-nowrap transition-all ${
+                role="tab"
+                aria-selected={active}
+                className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-lg text-[12.5px] sm:text-[13px] whitespace-nowrap shrink-0 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-black/10 ${
                   active
-                    ? 'bg-[#18181B] text-white shadow-sm'
-                    : 'text-[#52525B] hover:bg-[#F4F4F5] hover:text-[#18181B]'
+                    ? 'bg-white text-[#18181B] font-semibold ring-1.5 ring-[#18181B] shadow-[0_0_0_1.5px_#18181B] hover:bg-white'
+                    : 'bg-transparent text-[#52525B] hover:text-[#18181B] font-medium'
                 }`}
+                style={{ fontFamily: 'inherit' }}
                 data-testid={`control-tab-${to.split('/').pop()}`}
               >
-                <Icon size={15} weight={active ? 'fill' : 'duotone'} />
-                {label}
+                <Icon size={14} weight={active ? 'fill' : 'regular'} />
+                <span className="truncate">{label}</span>
               </NavLink>
             );
           })}

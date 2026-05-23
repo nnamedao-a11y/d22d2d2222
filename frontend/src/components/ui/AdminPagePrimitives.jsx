@@ -30,9 +30,18 @@ function cn(...xs) {
 }
 
 /**
- * Page header — icon + title (single row), subtitle as its own full-width
- * row below, action controls flow into their own row on small screens so
- * dropdowns never get squeezed into a vertical "30 days" ribbon.
+ * Page header — title block (icon + title + subtitle) on the LEFT,
+ * primary actions docked to the top-RIGHT. Layout collapses gracefully:
+ *
+ *   ┌──────────────────────────────────────────────┬──────────┐
+ *   │ [icon] Title                                  │ [Refresh]│
+ *   │        Subtitle goes here, can wrap.          │          │
+ *   └──────────────────────────────────────────────┴──────────┘
+ *
+ * On very narrow viewports (<420px) the actions wrap below the title to
+ * avoid breaking long titles, but on every standard mobile width (≥414)
+ * a single icon-only Refresh button stays in the corner — which is the
+ * canonical "System" layout we standardise on across all admin pages.
  */
 export function AdminPageHeader({
   icon: Icon,
@@ -50,29 +59,31 @@ export function AdminPageHeader({
       )}
       data-testid={testId}
     >
-      <div className="flex items-center gap-3">
+      <div className="flex items-start gap-3">
         {Icon && (
           <div className="w-10 h-10 rounded-xl bg-[#18181B] text-white flex items-center justify-center shrink-0">
             <Icon size={18} weight="duotone" />
           </div>
         )}
-        <h1 className="text-[17px] sm:text-[19px] font-semibold tracking-tight text-[#18181B] leading-tight truncate flex-1 min-w-0">
-          {title}
-        </h1>
-      </div>
-      {subtitle && (
-        <p className="mt-2 text-[12.5px] sm:text-[13px] text-[#71717A] leading-relaxed">
-          {subtitle}
-        </p>
-      )}
-      {actions && (
-        <div
-          className="mt-3 flex flex-wrap items-center gap-2 sm:gap-3"
-          data-testid={`${testId}-actions`}
-        >
-          {actions}
+        <div className="flex-1 min-w-0">
+          <h1 className="text-[17px] sm:text-[19px] font-semibold tracking-tight text-[#18181B] leading-tight">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="mt-1 text-[12.5px] sm:text-[13px] text-[#71717A] leading-relaxed">
+              {subtitle}
+            </p>
+          )}
         </div>
-      )}
+        {actions && (
+          <div
+            className="flex items-center gap-2 sm:gap-3 shrink-0"
+            data-testid={`${testId}-actions`}
+          >
+            {actions}
+          </div>
+        )}
+      </div>
     </header>
   );
 }
