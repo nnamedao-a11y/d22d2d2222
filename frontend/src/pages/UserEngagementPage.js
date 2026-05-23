@@ -352,29 +352,35 @@ const UserEngagementPage = () => {
 // Stat Card Component
 const UserEngagementPage_StatCardLEGACY = null; // placeholder for diff anchor
 const StatCard = ({ icon: Icon, label, value, tint, color }) => {
-  // Back-compat: callers may still pass `color="purple"` — fall through to tint.
+  // Back-compat: callers may still pass `color="purple"` — that prop is now
+  // ignored visually. ALL icons render in the muted admin gray so the four
+  // KPI cards look uniform (no red heart / orange flame breaking the palette).
   const resolvedTint = tint || color || 'muted';
+  // Single source of truth — every legacy palette key resolves to the same
+  // neutral gray. If we ever want a real status tint, route it through
+  // `tint="rose|amber|blue"` deliberately rather than via leftover `color=…`.
   const TINT = {
     rose:  'text-rose-500',
     amber: 'text-amber-500',
     blue:  'text-blue-500',
-    purple:'text-[#A1A1AA]', // map old purple → muted gray
-    red:   'text-rose-500',
-    yellow:'text-amber-500',
-    orange:'text-amber-500',
-    green: 'text-[#A1A1AA]',
     muted: 'text-[#A1A1AA]',
   };
+  const safeTint = TINT[resolvedTint] || TINT.muted;
+  // Value can be undefined while analytics is still loading or the backend
+  // returns nothing — render an explicit `0` so all KPI cards have the same
+  // visual rhythm (label + icon row, big numeric row underneath).
+  const displayValue =
+    value === undefined || value === null || value === '' ? '0' : value;
   return (
     <div className="bg-white border border-[#E4E4E7] rounded-2xl p-3 sm:p-4 min-w-0 overflow-hidden hover:border-[#D4D4D8] transition-colors">
       <div className="flex items-center justify-between gap-2 mb-1.5">
         <span className="text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.10em] text-[#71717A] truncate">
           {label}
         </span>
-        {Icon && <Icon size={14} weight="bold" className={`${TINT[resolvedTint] || TINT.muted} flex-shrink-0`} />}
+        {Icon && <Icon size={14} weight="bold" className={`${safeTint} flex-shrink-0`} />}
       </div>
-      <div className="text-[22px] sm:text-[26px] font-semibold tabular-nums leading-tight text-[#18181B] truncate" title={String(value)}>
-        {value}
+      <div className="text-[22px] sm:text-[26px] font-semibold tabular-nums leading-tight text-[#18181B] truncate" title={String(displayValue)}>
+        {displayValue}
       </div>
     </div>
   );
