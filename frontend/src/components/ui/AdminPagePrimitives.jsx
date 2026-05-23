@@ -31,17 +31,14 @@ function cn(...xs) {
 
 /**
  * Page header — title block (icon + title + subtitle) on the LEFT,
- * primary actions docked to the top-RIGHT. Layout collapses gracefully:
+ * primary actions docked to the top-RIGHT.
  *
- *   ┌──────────────────────────────────────────────┬──────────┐
- *   │ [icon] Title                                  │ [Refresh]│
- *   │        Subtitle goes here, can wrap.          │          │
- *   └──────────────────────────────────────────────┴──────────┘
- *
- * On very narrow viewports (<420px) the actions wrap below the title to
- * avoid breaking long titles, but on every standard mobile width (≥414)
- * a single icon-only Refresh button stays in the corner — which is the
- * canonical "System" layout we standardise on across all admin pages.
+ * Mobile rule:
+ *   When `actions` is wider than ~80 px (i.e. ANY actions are provided), the
+ *   header switches to a two-row layout so the title block is never squeezed
+ *   into a per-character-wrap column. Title row gets full width, actions row
+ *   sits below. On `sm:` and up we go back to one row with actions on the
+ *   right — there is always enough room then.
  */
 export function AdminPageHeader({
   icon: Icon,
@@ -59,25 +56,27 @@ export function AdminPageHeader({
       )}
       data-testid={testId}
     >
-      <div className="flex items-start gap-3">
-        {Icon && (
-          <div className="w-10 h-10 rounded-xl bg-[#18181B] text-white flex items-center justify-center shrink-0">
-            <Icon size={18} weight="duotone" />
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <h1 className="text-[17px] sm:text-[19px] font-semibold tracking-tight text-[#18181B] leading-tight">
-            {title}
-          </h1>
-          {subtitle && (
-            <p className="mt-1 text-[12.5px] sm:text-[13px] text-[#71717A] leading-relaxed">
-              {subtitle}
-            </p>
+      <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4">
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          {Icon && (
+            <div className="w-10 h-10 rounded-xl bg-[#18181B] text-white flex items-center justify-center shrink-0">
+              <Icon size={18} weight="duotone" />
+            </div>
           )}
+          <div className="flex-1 min-w-0">
+            <h1 className="text-[17px] sm:text-[19px] font-semibold tracking-tight text-[#18181B] leading-tight">
+              {title}
+            </h1>
+            {subtitle && (
+              <p className="mt-1 text-[12.5px] sm:text-[13px] text-[#71717A] leading-relaxed">
+                {subtitle}
+              </p>
+            )}
+          </div>
         </div>
         {actions && (
           <div
-            className="flex items-center gap-2 sm:gap-3 shrink-0"
+            className="flex items-center gap-2 sm:gap-3 shrink-0 self-stretch sm:self-start justify-end"
             data-testid={`${testId}-actions`}
           >
             {actions}
