@@ -24,6 +24,7 @@ import {
   Path,
   Timer,
   ChartLineUp,
+  Lightning,
 } from '@phosphor-icons/react';
 import { useLang } from '../../i18n';
 
@@ -60,40 +61,62 @@ const ControlSubNav = () => {
   ];
 
   return (
-    <div
-      className="-mx-4 md:-mx-6 lg:-mx-[50px] -mt-5 md:-mt-6 lg:-mt-8 mb-5 sm:mb-6 bg-white border-b border-[#E4E4E7]"
-      data-testid="control-subnav"
-    >
-      <div className="px-4 md:px-6 lg:px-[50px] py-3 sm:py-3.5 overflow-x-auto scrollbar-none">
-        {/* Canonical SectionTabs visual: #FAFAFA track + white active pill
-            with 1.5px black ring. Same language used everywhere else
-            (Documents, Marketing, Owner Dashboard sub-sections). */}
-        <div
-          role="tablist"
-          aria-label="Control sections"
-          className="inline-flex p-1 bg-[#FAFAFA] border border-[#E4E4E7] rounded-xl gap-1 max-w-full"
-        >
-          {tabs.map(({ to, icon: Icon, label }) => {
-            const active = pathname === to;
-            return (
-              <NavLink
-                key={to}
-                to={to}
-                role="tab"
-                aria-selected={active}
-                className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-lg text-[12.5px] sm:text-[13px] whitespace-nowrap shrink-0 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-black/10 ${
-                  active
-                    ? 'bg-white text-[#18181B] font-semibold ring-1.5 ring-[#18181B] shadow-[0_0_0_1.5px_#18181B] hover:bg-white'
-                    : 'bg-transparent text-[#52525B] hover:text-[#18181B] font-medium'
-                }`}
-                style={{ fontFamily: 'inherit' }}
-                data-testid={`control-tab-${to.split('/').pop()}`}
-              >
-                <Icon size={14} weight={active ? 'fill' : 'regular'} />
-                <span className="truncate">{label}</span>
-              </NavLink>
-            );
-          })}
+    <div data-testid="control-subnav-wrapper">
+      {/* Section heading — mirrors the Settings / Workflow / Workspace pattern.
+          Without this, the ControlSubNav tabs sit flush against the global app
+          header and feel like they belong to it. The title + subtitle gives the
+          Control hub the same breathing room every other section has. */}
+      <div className="px-1 mb-3 sm:mb-4">
+        <div className="flex items-center gap-2 mb-1">
+          <Lightning size={14} weight="duotone" className="text-[#71717A]" />
+          <span className="text-[10.5px] sm:text-[11px] font-semibold uppercase tracking-[0.14em] text-[#71717A]">
+            {t('control') || 'Control'}
+          </span>
+        </div>
+        <h1 className="text-[18px] sm:text-[20px] font-semibold text-[#18181B] leading-tight tracking-tight" style={{ fontFamily: 'Mazzard, Mazzard H, Mazzard M, system-ui, sans-serif' }}>
+          {t('adm_control_hub_title') || 'Control Hub'}
+        </h1>
+        <p className="mt-1 text-[12.5px] sm:text-[13px] text-[#71717A] leading-relaxed">
+          {t('adm_control_hub_subtitle') || 'Business metrics, provider pressure, routing, cadences and scoring — all in one place.'}
+        </p>
+      </div>
+
+      {/* Tabs strip */}
+      <div
+        className="mb-5 sm:mb-6"
+        data-testid="control-subnav"
+      >
+        <div className="overflow-x-auto scrollbar-none">
+          {/* Canonical SectionTabs visual: #FAFAFA track + white active pill
+              with 1.5px black ring. Same language used everywhere else
+              (Documents, Marketing, Owner Dashboard sub-sections). */}
+          <div
+            role="tablist"
+            aria-label="Control sections"
+            className="inline-flex p-1 bg-[#FAFAFA] border border-[#E4E4E7] rounded-xl gap-1 max-w-full"
+          >
+            {tabs.map(({ to, icon: Icon, label }) => {
+              const active = pathname === to;
+              return (
+                <NavLink
+                  key={to}
+                  to={to}
+                  role="tab"
+                  aria-selected={active}
+                  className={`inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-lg text-[12.5px] sm:text-[13px] whitespace-nowrap shrink-0 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-black/10 ${
+                    active
+                      ? 'bg-white text-[#18181B] font-semibold ring-1.5 ring-[#18181B] shadow-[0_0_0_1.5px_#18181B] hover:bg-white'
+                      : 'bg-transparent text-[#52525B] hover:text-[#18181B] font-medium'
+                  }`}
+                  style={{ fontFamily: 'inherit' }}
+                  data-testid={`control-tab-${to.split('/').pop()}`}
+                >
+                  <Icon size={14} weight={active ? 'fill' : 'regular'} />
+                  <span className="truncate">{label}</span>
+                </NavLink>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

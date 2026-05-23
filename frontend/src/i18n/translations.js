@@ -5741,6 +5741,10 @@ export const translations = {
     autoLeads: 'Авто-ліди',
     totalUsersWithIntent: 'Усього з намірами',
     averageScore: 'Середній скор',
+
+    // Control hub section heading
+    adm_control_hub_title: 'Центр керування',
+    adm_control_hub_subtitle: 'Бізнес-метрики, навантаження на провайдерів, маршрутизація, каденси та скоринг — все в одному місці.',
   },
   
   en: {
@@ -11458,6 +11462,10 @@ export const translations = {
     autoLeads: 'Auto-leads',
     totalUsersWithIntent: 'Users with intent',
     averageScore: 'Average score',
+
+    // Control hub section heading
+    adm_control_hub_title: 'Control Hub',
+    adm_control_hub_subtitle: 'Business metrics, provider pressure, routing, cadences and scoring — all in one place.',
   },
 
   bg: {
@@ -17188,6 +17196,10 @@ export const translations = {
     autoLeads: 'Авто-лийдове',
     totalUsersWithIntent: 'Потребители с намерения',
     averageScore: 'Средна оценка',
+
+    // Control hub section heading
+    adm_control_hub_title: 'Контролен център',
+    adm_control_hub_subtitle: 'Бизнес метрики, натоварване на доставчици, маршрутизиране, каданси и скоринг — всичко на едно място.',
   },
 };
 
